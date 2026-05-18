@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderAlerts();
         renderTxHistory();
+        if (document.getElementById('news')?.classList.contains('active')) loadNews();
     };
 
     // =====================================================
@@ -849,18 +850,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =====================================================
-    // NEWS
+    // NEWS — Multi-language data (AZ / EN / RU)
     // =====================================================
-    const newsItems = [
-        { title: "Bitcoin $100,000 Həddinə Yaxınlaşır", summary: "BTC son 24 saatda %3.2 artaraq kritik psixoloji həddə yaxınlaşdı.", tag: 'bitcoin', time: '2 saat əvvəl', icon: '₿', color: '#f7931a' },
-        { title: "Ethereum 2.0 Yeniləməsi Gözlənilir", summary: "Ethereum şəbəkəsi növbəti həftə mühüm protokol yeniləməsi alacaq.", tag: 'ethereum', time: '4 saat əvvəl', icon: 'Ξ', color: '#627eea' },
-        { title: "DeFi Protokollarında Rekord TVL", summary: "Decentralized Finance protokollarında kilitli dəyər $200B-ı keçdi.", tag: 'defi', time: '6 saat əvvəl', icon: '🔒', color: '#3d6eff' },
-        { title: "SEC Kripto ETF Qərarını Açıqlayacaq", summary: "ABŞ Qiymətli Kağızlar Komissiyası yeni kripto ETF müraciətinə bu ay cavab verəcək.", tag: 'all', time: '8 saat əvvəl', icon: '⚖️', color: '#808a9d' },
-        { title: "Solana Ekosistemi Rekord İstifadəçi Sayına Çatdı", summary: "Solana blokzəncirinin gündəlik aktiv cüzdanları 5 milyonu aşdı.", tag: 'all', time: '10 saat əvvəl', icon: '◎', color: '#9945ff' },
-        { title: "Tether USDT Rezervlərini Açıqladı", summary: "Tether şirkəti rüblük hesabatda $100B-dan çox ABŞ dövlət istiqrazı saxladığını bildirdi.", tag: 'stablecoin', time: '12 saat əvvəl', icon: '₮', color: '#26a17b' },
-        { title: "NFT Bazarı Canlanma Əlamətləri Göstərir", summary: "OpenSea platformasında həcm 3 aylıq zirvəsinə çatdı.", tag: 'nft', time: '1 gün əvvəl', icon: '🎨', color: '#eb4b98' },
-        { title: "Kripto Birjalarında Tənzimləmə Yenilənmələri", summary: "Avropa Birliyi MiCA çərçivəsinin tətbiqinə hazırlıq tamamlanır.", tag: 'all', time: '1 gün əvvəl', icon: '🏛️', color: '#00b4d8' },
-    ];
+    const newsData = {
+        az: [
+            { title: "Bitcoin $100,000 Həddinə Yaxınlaşır",           summary: "BTC son 24 saatda %3.2 artaraq kritik psixoloji həddə yaxınlaşdı. Analistlər qısamüddətli düzəliş riski barədə xəbərdarlıq edirlər.",                              tag: 'bitcoin',    time: '2 saat əvvəl',  icon: '₿',  color: '#f7931a' },
+            { title: "Ethereum 2.0 Yeniləməsi Gözlənilir",             summary: "Ethereum şəbəkəsi növbəti həftə mühüm protokol yeniləməsi alacaq. Yeniləmə əməliyyat sürətini 30% artıracağı gözlənilir.",                                           tag: 'ethereum',   time: '4 saat əvvəl',  icon: 'Ξ',  color: '#627eea' },
+            { title: "DeFi Protokollarında Rekord TVL",                 summary: "Decentralized Finance protokollarında kilitli dəyər $200 milyard həddini keçdi. Uniswap və Aave bu artımın əsas sürücüləri oldu.",                                   tag: 'defi',       time: '6 saat əvvəl',  icon: '🔒', color: '#3d6eff' },
+            { title: "SEC Kripto ETF Qərarını Açıqlayacaq",             summary: "ABŞ Qiymətli Kağızlar Komissiyası yeni kripto ETF müraciətinə bu ay cavab verəcək. Müsbət nəticə bazara yeni kapital axını gətirə bilər.",                           tag: 'all',        time: '8 saat əvvəl',  icon: '⚖️', color: '#808a9d' },
+            { title: "Solana Ekosistemi Rekord İstifadəçi Sayına Çatdı", summary: "Solana blokzəncirinin gündəlik aktiv cüzdanları 5 milyonu aşdı. Bu göstərici şəbəkənin 2022-ci il zirvəsindən 3 dəfə çoxdur.",                                    tag: 'all',        time: '10 saat əvvəl', icon: '◎', color: '#9945ff' },
+            { title: "Tether USDT Rezervlərini Açıqladı",               summary: "Tether şirkəti rüblük hesabatda $100 milyard ABŞ dövlət istiqrazı saxladığını bildirdi. Bu şəffaflıq addımı bazarda inamı artırdı.",                                tag: 'stablecoin', time: '12 saat əvvəl', icon: '₮', color: '#26a17b' },
+            { title: "NFT Bazarı Canlanma Əlamətləri Göstərir",         summary: "OpenSea platformasında həftəlik həcm 3 aylıq zirvəsinə çatdı. Kriptosanat kolleksiyaları ən çox tələbat görən kateqoriyaya çevrildi.",                              tag: 'nft',        time: '1 gün əvvəl',   icon: '🎨', color: '#eb4b98' },
+            { title: "Kripto Birjalarında Tənzimləmə Yenilənmələri",    summary: "Avropa Birliyi MiCA çərçivəsinin tətbiqinə hazırlıq tamamlanır. İri birjalar artıq yeni lisenziya tələblərinə uyğunlaşma prosesini başladıb.",                      tag: 'all',        time: '1 gün əvvəl',   icon: '🏛️', color: '#00b4d8' },
+        ],
+        en: [
+            { title: "Bitcoin Approaches $100,000 Milestone",           summary: "BTC rose 3.2% in the last 24 hours, approaching the key psychological level. Analysts warn of short-term correction risk.",                                          tag: 'bitcoin',    time: '2 hours ago',   icon: '₿',  color: '#f7931a' },
+            { title: "Ethereum 2.0 Upgrade Expected",                   summary: "The Ethereum network will receive a major protocol upgrade next week. The update is expected to increase transaction speed by 30%.",                                  tag: 'ethereum',   time: '4 hours ago',   icon: 'Ξ',  color: '#627eea' },
+            { title: "Record TVL in DeFi Protocols",                    summary: "Total value locked in Decentralized Finance protocols exceeded $200 billion. Uniswap and Aave were the primary drivers of this growth.",                            tag: 'defi',       time: '6 hours ago',   icon: '🔒', color: '#3d6eff' },
+            { title: "SEC to Announce Crypto ETF Decision",             summary: "The U.S. Securities and Exchange Commission will respond to new crypto ETF applications this month. A positive outcome could bring fresh capital to the market.",   tag: 'all',        time: '8 hours ago',   icon: '⚖️', color: '#808a9d' },
+            { title: "Solana Ecosystem Hits Record User Count",         summary: "Daily active wallets on the Solana blockchain surpassed 5 million. This figure is 3x the network's 2022 peak.",                                                     tag: 'all',        time: '10 hours ago',  icon: '◎', color: '#9945ff' },
+            { title: "Tether Discloses USDT Reserves",                  summary: "Tether reported holding over $100 billion in U.S. Treasury bonds in its quarterly report. This transparency move boosted market confidence.",                       tag: 'stablecoin', time: '12 hours ago',  icon: '₮', color: '#26a17b' },
+            { title: "NFT Market Shows Signs of Recovery",              summary: "Weekly volume on OpenSea reached a 3-month high. Crypto art collections became the most in-demand category.",                                                       tag: 'nft',        time: '1 day ago',     icon: '🎨', color: '#eb4b98' },
+            { title: "Regulatory Updates at Crypto Exchanges",          summary: "The EU is finalizing implementation of the MiCA framework. Major exchanges have already begun adapting to new licensing requirements.",                              tag: 'all',        time: '1 day ago',     icon: '🏛️', color: '#00b4d8' },
+        ],
+        ru: [
+            { title: "Bitcoin приближается к отметке $100,000",         summary: "BTC вырос на 3.2% за последние 24 часа, приближаясь к ключевому психологическому уровню. Аналитики предупреждают о риске краткосрочной коррекции.",               tag: 'bitcoin',    time: '2 часа назад',  icon: '₿',  color: '#f7931a' },
+            { title: "Ожидается обновление Ethereum 2.0",               summary: "Сеть Ethereum получит крупное обновление протокола на следующей неделе. Ожидается, что обновление увеличит скорость транзакций на 30%.",                           tag: 'ethereum',   time: '4 часа назад',  icon: 'Ξ',  color: '#627eea' },
+            { title: "Рекордный TVL в протоколах DeFi",                 summary: "Общая заблокированная стоимость в протоколах децентрализованных финансов превысила $200 млрд. Основными драйверами стали Uniswap и Aave.",                        tag: 'defi',       time: '6 часов назад', icon: '🔒', color: '#3d6eff' },
+            { title: "SEC объявит решение по криптовалютным ETF",        summary: "Комиссия по ценным бумагам США ответит на заявки на криптовалютные ETF в этом месяце. Положительный исход может привлечь новый капитал на рынок.",               tag: 'all',        time: '8 часов назад', icon: '⚖️', color: '#808a9d' },
+            { title: "Экосистема Solana достигла рекордного числа пользователей", summary: "Ежедневные активные кошельки в блокчейне Solana превысили 5 миллионов. Этот показатель в 3 раза превышает пик 2022 года.",                            tag: 'all',        time: '10 часов назад', icon: '◎', color: '#9945ff' },
+            { title: "Tether раскрыла резервы USDT",                    summary: "Tether сообщила о хранении более $100 млрд в казначейских облигациях США по итогам квартального отчёта. Этот шаг к прозрачности повысил доверие рынка.",         tag: 'stablecoin', time: '12 часов назад', icon: '₮', color: '#26a17b' },
+            { title: "Рынок NFT демонстрирует признаки восстановления", summary: "Еженедельный объём на OpenSea достиг 3-месячного максимума. Коллекции крипто-арта стали самой востребованной категорией.",                                       tag: 'nft',        time: '1 день назад',  icon: '🎨', color: '#eb4b98' },
+            { title: "Регуляторные обновления на криптобиржах",         summary: "ЕС завершает внедрение MiCA. Крупные биржи уже начали адаптацию к новым требованиям лицензирования.",                                                              tag: 'all',        time: '1 день назад',  icon: '🏛️', color: '#00b4d8' },
+        ],
+    };
 
     let currentNewsFilter = 'all';
     window.filterNews = function(tag, evt) {
@@ -873,17 +896,21 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadNews() {
         const grid = document.getElementById('news-grid');
         if (!grid) return;
-        const items = currentNewsFilter === 'all' ? newsItems : newsItems.filter(n => n.tag === currentNewsFilter || n.tag === 'all');
+        const lang = window.getCurrentLang ? window.getCurrentLang() : 'az';
+        const langItems = newsData[lang] || newsData.az;
+        const items = currentNewsFilter === 'all'
+            ? langItems
+            : langItems.filter(n => n.tag === currentNewsFilter || n.tag === 'all');
         grid.innerHTML = items.map(item => `
             <div class="news-card card">
                 <div style="display:flex;align-items:flex-start;gap:15px;">
                     <div style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);font-size:20px;flex-shrink:0;">${item.icon}</div>
-                    <div style="flex:1;">
+                    <div style="flex:1;min-width:0;">
                         <h4 style="margin:0 0 8px;color:white;line-height:1.4;">${item.title}</h4>
                         <p style="color:var(--text-gray);font-size:13px;margin:0 0 12px;line-height:1.6;">${item.summary}</p>
-                        <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
                             <span style="font-size:11px;background:rgba(61,110,255,0.1);color:var(--accent);padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;">${item.tag === 'all' ? window.t('news_tag_general') : item.tag}</span>
-                            <span style="font-size:12px;color:var(--text-gray);"><i class="fa-regular fa-clock"></i> ${item.time}</span>
+                            <span style="font-size:12px;color:var(--text-gray);white-space:nowrap;"><i class="fa-regular fa-clock"></i> ${item.time}</span>
                         </div>
                     </div>
                 </div>
