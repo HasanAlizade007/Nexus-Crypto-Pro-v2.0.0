@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Pro | Sazlamalar</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#050608">
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+        <aside class="sidebar" id="sidebar">
+            <div class="logo" onclick="location.href='index.html'" style="cursor:pointer">
+                <div class="logo-box"><i class="fa-solid fa-bolt-lightning"></i></div>
+                <span>NEXUS PRO</span>
+                <button class="sidebar-close-btn" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <nav class="menu">
+                <p class="menu-label" data-i18n="menu_main">ƏSAS</p>
+                <ul>
+                    <li class="nav-link" onclick="location.href='index.html'"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="dashboard">Dashboard</span></li>
+                    <li class="nav-link" onclick="location.href='index.html?tab=market'"><i class="fa-solid fa-chart-area"></i> <span data-i18n="market">Bazar Analizi</span></li>
+                </ul>
+                <p class="menu-label" data-i18n="menu_account">HESAB</p>
+                <ul>
+                    <li class="nav-link active"><i class="fa-solid fa-gear"></i> <span data-i18n="settings">Sazlamalar</span></li>
+                    <li class="nav-link" id="logout-sidebar" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> <span data-i18n="sidebar_logout">Çıxış</span></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-nav">
+                <div class="top-nav-left">
+                    <button class="hamburger-btn" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></button>
+                    <div class="page-title"><h2 data-i18n="settings_title">Hesab Sazlamaları</h2></div>
+                </div>
+                <div class="header-right">
+                    <div class="lang-selector" id="lang-selector">
+                        <button class="lang-btn" id="lang-btn" onclick="toggleLangDropdown()">
+                            <i class="fa-solid fa-globe"></i>
+                            <span id="lang-current">AZ</span>
+                            <i class="fa-solid fa-chevron-down lang-chevron" id="lang-chevron"></i>
+                        </button>
+                        <div class="lang-dropdown" id="lang-dropdown">
+                            <div class="lang-option active" onclick="setLanguage('az')" data-lang="az">
+                                <span class="lang-flag">🇦🇿</span>
+                                <span>Azərbaycan</span>
+                                <span class="lang-code">AZ</span>
+                            </div>
+                            <div class="lang-option" onclick="setLanguage('en')" data-lang="en">
+                                <span class="lang-flag" style="font-size:13px;font-weight:800;color:#4a90d9;">EN</span>
+                                <span>English</span>
+                                <span class="lang-code">EN</span>
+                            </div>
+                            <div class="lang-option" onclick="setLanguage('ru')" data-lang="ru">
+                                <span class="lang-flag">🇷🇺</span>
+                                <span>Русский</span>
+                                <span class="lang-code">RU</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-pill">
+                        <img id="header-avatar" src="" alt="">
+                        <span id="header-username">Yüklənir...</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-body">
+                <div class="settings-layout">
+
+                    <!-- LEFT COLUMN -->
+                    <div class="settings-main">
+
+                        <!-- Profile Section -->
+                        <div class="card settings-card">
+                            <h3 class="settings-card-title"><i class="fa-solid fa-user-pen"></i> <span data-i18n="profile_section">Profili Yenilə</span></h3>
+                            <div class="avatar-edit-section">
+                                <img id="preview-img" src="" alt="avatar" class="avatar-preview">
+                                <div class="avatar-upload-btn">
+                                    <label for="file-upload" class="btn-primary" data-i18n="choose_photo">Şəkil Seç</label>
+                                    <input type="file" id="file-upload" hidden accept="image/*">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label data-i18n="full_name">Ad Soyad</label>
+                                <input type="text" id="set-name" class="settings-input">
+                            </div>
+                            <div class="input-group" style="margin-top: 15px;">
+                                <label data-i18n="email_label">E-poçt (Gmail)</label>
+                                <input type="email" id="set-email" class="settings-input">
+                            </div>
+                            <button class="btn-primary settings-save-btn" id="save-all" data-i18n="save_changes">Dəyişiklikləri Yadda Saxla</button>
+                        </div>
+
+                        <!-- Appearance Section -->
+                        <div class="card settings-card">
+                            <h3 class="settings-card-title"><i class="fa-solid fa-palette"></i> <span data-i18n="appearance_title">Görünüş</span></h3>
+                            <div class="settings-item" style="border-bottom:none;padding-bottom:4px;">
+                                <div class="settings-item-info">
+                                    <span class="settings-item-label">Accent Rəng</span>
+                                    <span class="settings-item-desc">İnterfeysin əsas rəngini seçin</span>
+                                </div>
+                            </div>
+                            <div class="color-picker-grid" id="color-picker-grid">
+                                <button class="color-swatch" data-color="#3d6eff" onclick="selectAccentColor('#3d6eff',this)" title="Mavi">
+                                    <span style="background:#3d6eff;"></span>
+                                </button>
+                                <button class="color-swatch" data-color="#8b5cf6" onclick="selectAccentColor('#8b5cf6',this)" title="Bənövşəyi">
+                                    <span style="background:#8b5cf6;"></span>
+                                </button>
+                                <button class="color-swatch" data-color="#10b981" onclick="selectAccentColor('#10b981',this)" title="Yaşıl">
+                                    <span style="background:#10b981;"></span>
+                                </button>
+                                <button class="color-swatch" data-color="#f97316" onclick="selectAccentColor('#f97316',this)" title="Narıncı">
+                                    <span style="background:#f97316;"></span>
+                                </button>
+                                <button class="color-swatch" data-color="#ec4899" onclick="selectAccentColor('#ec4899',this)" title="Çəhrayı">
+                                    <span style="background:#ec4899;"></span>
+                                </button>
+                                <button class="color-swatch" data-color="#06b6d4" onclick="selectAccentColor('#06b6d4',this)" title="Firuzəyi">
+                                    <span style="background:#06b6d4;"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Notifications Section -->
+                        <div class="card settings-card">
+                            <h3 class="settings-card-title"><i class="fa-solid fa-bell"></i> <span data-i18n="notifications_title">Bildirişlər</span></h3>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <span class="settings-item-label" data-i18n="notif_price">Qiymət Xəbərdarlıqları</span>
+                                    <span class="settings-item-desc" data-i18n="notif_price_desc">Qiymət həddinə çatdıqda bildiriş al</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-notif-price" onchange="saveToggle('notif_price', this.checked)">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <span class="settings-item-label" data-i18n="notif_news">Xəbər Bildirişləri</span>
+                                    <span class="settings-item-desc" data-i18n="notif_news_desc">Son kripto xəbərlərini izlə</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-notif-news" onchange="saveToggle('notif_news', this.checked)">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <span class="settings-item-label" data-i18n="notif_trade">Əməliyyat Bildirişləri</span>
+                                    <span class="settings-item-desc" data-i18n="notif_trade_desc">Alış/Satış əməliyyatlarından sonra bildiriş</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-notif-trade" onchange="saveToggle('notif_trade', this.checked)">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Privacy Section -->
+                        <div class="card settings-card">
+                            <h3 class="settings-card-title"><i class="fa-solid fa-shield-halved"></i> <span data-i18n="privacy_title">Gizlilik</span></h3>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <span class="settings-item-label" data-i18n="hide_balance">Balansı Gizlət</span>
+                                    <span class="settings-item-desc" data-i18n="hide_balance_desc">Balans dəyərlərini avtomatik gizlət</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-hide-balance" onchange="saveToggle('hide_balance', this.checked)">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-item-info">
+                                    <span class="settings-item-label" data-i18n="two_factor">2FA Doğrulaması</span>
+                                    <span class="settings-item-desc" data-i18n="two_factor_desc">İki faktorlu doğrulama (tezliklə)</span>
+                                </div>
+                                <label class="toggle-switch toggle-disabled">
+                                    <input type="checkbox" id="toggle-2fa" disabled>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="settings-side">
+
+                        <!-- Account Status -->
+                        <div class="card settings-card">
+                            <h4 class="settings-side-title" data-i18n="account_status">Hesab Statusu</h4>
+                            <p class="settings-verified"><i class="fa-solid fa-circle-check"></i> <span data-i18n="verified">Doğrulanmış Hesab</span></p>
+                        </div>
+
+                        <!-- Language Section -->
+                        <div class="card settings-card">
+                            <h4 class="settings-side-title"><i class="fa-solid fa-globe"></i> <span data-i18n="language_title">Dil Seçimi</span></h4>
+                            <p class="settings-lang-desc" data-i18n="language_desc">İnterfeys dilini seçin</p>
+                            <div class="lang-option-list">
+                                <button class="lang-pick-btn" onclick="setLanguage('az')" data-langpick="az">
+                                    <span>🇦🇿</span> Azərbaycan <span class="lang-pick-code">AZ</span>
+                                </button>
+                                <button class="lang-pick-btn" onclick="setLanguage('en')" data-langpick="en">
+                                    <span style="font-size:12px;font-weight:800;color:#4a90d9;">EN</span> English <span class="lang-pick-code">EN</span>
+                                </button>
+                                <button class="lang-pick-btn" onclick="setLanguage('ru')" data-langpick="ru">
+                                    <span>🇷🇺</span> Русский <span class="lang-pick-code">RU</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- About Section -->
+                        <div class="card settings-card">
+                            <h4 class="settings-side-title"><i class="fa-solid fa-circle-info"></i> <span data-i18n="about_title">Haqqında</span></h4>
+                            <div class="about-row">
+                                <span class="about-label" data-i18n="app_name_label">Proqram</span>
+                                <span class="about-value">Nexus Crypto Pro</span>
+                            </div>
+                            <div class="about-row">
+                                <span class="about-label" data-i18n="app_version_label">Versiya</span>
+                                <span class="about-value about-version">v2.0.0</span>
+                            </div>
+                            <div class="about-row">
+                                <span class="about-label" data-i18n="data_source_label">Məlumat Mənbəyi</span>
+                                <span class="about-value">CoinGecko API</span>
+                            </div>
+                        </div>
+
+                        <!-- Danger Zone -->
+                        <div class="card settings-card settings-danger-card">
+                            <h4 class="settings-side-title settings-danger-title" data-i18n="danger_zone">Təhlükəli Zona</h4>
+                            <p class="settings-danger-desc" data-i18n="danger_desc">Hesabdan çıxış etmək üçün aşağıdakı düyməni istifadə edin.</p>
+                            <button class="btn-primary settings-logout-btn" id="final-logout" data-i18n="logout">Çıxış Et</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/settings.js"></script>
+    <script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('active');
+        document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+    }
+    function closeSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    </script>
+</body>
+</html>

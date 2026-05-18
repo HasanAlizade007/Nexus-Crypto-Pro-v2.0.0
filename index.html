@@ -1,0 +1,742 @@
+<!-- https://claude.ai/chat/5463f02b-4dea-454e-8031-88f4133cca11 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Crypto Pro | Professional Terminal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="theme-color" content="#050608">
+</head>
+
+<body>
+<div class="app-container">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="logo">
+            <div class="logo-box"><i class="fa-solid fa-bolt-lightning"></i></div>
+            <span>NEXUS PRO</span>
+            <button class="sidebar-close-btn" onclick="closeSidebar()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <nav class="menu">
+            <p class="menu-label" data-i18n="menu_main">ƏSAS</p>
+            <ul>
+                <li class="nav-link active" data-target="dash"><i class="fa-solid fa-gauge-high"></i> <span data-i18n="dashboard">Dashboard</span></li>
+                <li class="nav-link" data-target="market"><i class="fa-solid fa-chart-area"></i> <span data-i18n="market">Bazar Analizi</span></li>
+                <li class="nav-link" data-target="wallet"><i class="fa-solid fa-wallet"></i> <span data-i18n="wallet">Pulqabı</span></li>
+                <li class="nav-link" data-target="watchlist"><i class="fa-solid fa-star"></i> <span data-i18n="watchlist">İzleme Siyahısı</span></li>
+                <li class="nav-link" data-target="news"><i class="fa-solid fa-newspaper"></i> <span data-i18n="news">Krypto Xəbərləri</span></li>
+                <li class="nav-link" data-target="converter"><i class="fa-solid fa-arrow-right-arrow-left"></i> <span data-i18n="converter">Konverter</span></li>
+                <li class="nav-link trading-nav-link" data-target="trading">
+                    <span class="trading-nav-logo"><i class="fa-solid fa-chart-candlestick"></i></span>
+                    <span data-i18n="trading">Trading</span>
+                    <span class="nav-trading-badge">LIVE</span>
+                </li>
+            </ul>
+            <p class="menu-label" data-i18n="menu_account">HESAB</p>
+            <ul>
+                <div class="user-pill sidebar-user" id="sidebar-profile" style="display:none; margin-bottom:10px;">
+                    <img id="user-avatar-side" src="" alt="avatar">
+                    <span id="user-name-side">İstifadəçi</span>
+                </div>
+                <li class="nav-link" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i> <span data-i18n="settings">Parametrlər</span></li>
+                <li class="nav-link" id="auth-nav-link" onclick="location.href='auth.html'"><i class="fa-solid fa-right-to-bracket"></i> <span data-i18n="login_reg">Giriş / Qeydiyyat</span></li>
+            </ul>
+        </nav>
+        <div class="sidebar-card">
+            <p data-i18n="premium_text">Premium-a keçid et!</p>
+            <button class="btn-upgrade" data-i18n="upgrade_btn">⚡ Yüksəlt</button>
+        </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+        <!-- Mobile overlay for sidebar -->
+        <header class="top-nav">
+            <div class="top-nav-left">
+                <button class="hamburger-btn" id="hamburger-btn" onclick="toggleSidebar()" aria-label="Menyu">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="global-search" data-i18n-placeholder="search_placeholder" placeholder="Kripto axtar (məs: BTC)...">
+            </div>
+            </div>
+            <div class="header-right">
+                <div class="notification" onclick="document.querySelector('.nav-link[data-target=dash]')?.click()" title="Xəbərdarlıqlar">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="badge" id="notif-badge" style="display:none;">0</span>
+                </div>
+                <!-- Language Selector -->
+                <div class="lang-selector" id="lang-selector">
+                    <button class="lang-btn" id="lang-btn" onclick="toggleLangDropdown()">
+                        <i class="fa-solid fa-globe"></i>
+                        <span id="lang-current">AZ</span>
+                        <i class="fa-solid fa-chevron-down lang-chevron" id="lang-chevron"></i>
+                    </button>
+                    <div class="lang-dropdown" id="lang-dropdown">
+                        <div class="lang-option active" onclick="setLanguage('az')" data-lang="az">
+                            <span class="lang-flag">🇦🇿</span>
+                            <span>Azərbaycan</span>
+                            <span class="lang-code">AZ</span>
+                        </div>
+                        <div class="lang-option" onclick="setLanguage('en')" data-lang="en">
+                            <span class="lang-flag" style="font-size:13px;font-weight:800;color:#4a90d9;">EN</span>
+                            <span>English</span>
+                            <span class="lang-code">EN</span>
+                        </div>
+                        <div class="lang-option" onclick="setLanguage('ru')" data-lang="ru">
+                            <span class="lang-flag">🇷🇺</span>
+                            <span>Русский</span>
+                            <span class="lang-code">RU</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="user-header-section">
+                    <button class="btn-primary" id="header-auth-btn" onclick="location.href='auth.html'" style="padding:8px 20px;font-size:13px;" data-i18n="login">Giriş Et</button>
+                    <div class="user-pill" id="header-profile" style="display:none;">
+                        <img id="user-avatar-head" src="" alt="avatar">
+                        <span id="user-name-display">Qonaq</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-body">
+
+            <!-- ======================== DASHBOARD ======================== -->
+            <section id="dash" class="tab-content active">
+                <!-- Ticker -->
+                <div class="ticker-header">
+                    <div class="ticker-content" id="ticker-grid"></div>
+                </div>
+                <br><br>
+                <!-- Top KPI row -->
+                <div class="kpi-row" id="kpi-row">
+                    <div class="kpi-card" id="kpi-btc">
+                        <div class="kpi-icon"><img src="" id="kpi-btc-img" width="32"></div>
+                        <div>
+                            <small>Bitcoin</small>
+                            <h3 id="kpi-btc-price">--</h3>
+                            <span id="kpi-btc-chg" class="kpi-badge">--</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card" id="kpi-eth">
+                        <div class="kpi-icon"><img src="" id="kpi-eth-img" width="32"></div>
+                        <div>
+                            <small>Ethereum</small>
+                            <h3 id="kpi-eth-price">--</h3>
+                            <span id="kpi-eth-chg" class="kpi-badge">--</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background:rgba(0,255,149,0.1);color:var(--success);"><i class="fa-solid fa-fire-flame-curved fa-lg"></i></div>
+                        <div>
+                            <small data-i18n="top_gainer">Ən Çox Qazanan</small>
+                            <h3 id="top-gainer-name">--</h3>
+                            <span id="top-gainer-pct" class="kpi-badge up-badge">--</span>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon" style="background:rgba(255,62,62,0.1);color:var(--danger);"><i class="fa-solid fa-arrow-trend-down fa-lg"></i></div>
+                        <div>
+                            <small data-i18n="top_loser">Ən Çox İtirən</small>
+                            <h3 id="top-loser-name">--</h3>
+                            <span id="top-loser-pct" class="kpi-badge down-badge">--</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chart + Stats -->
+                <div class="grid-top" style="margin-top:25px;">
+                    <div class="chart-container card">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+                            <h3 data-i18n="portfolio_perf">Portfelin Gəlirliliyi</h3>
+                            <div class="chart-period-tabs">
+                                <button class="period-btn active" data-period="1m">1A</button>
+                                <button class="period-btn" data-period="3m">3A</button>
+                                <button class="period-btn" data-period="6m">6A</button>
+                                <button class="period-btn" data-period="1y">1İL</button>
+                            </div>
+                        </div>
+                        <canvas id="portfolioChart"></canvas>
+                    </div>
+                    <div class="quick-stats">
+                        <div class="stat-mini card">
+                            <span data-i18n="total_balance">Ümumi Balans</span>
+                            <h2 id="dash-total-balance">$0.00</h2>
+                            <p class="text-up">+4.2% <i class="fa-solid fa-caret-up"></i></p>
+                        </div>
+                        <div class="stat-mini card">
+                            <span data-i18n="vol_24h">24s Həcm</span>
+                            <h2>$12,400.50</h2>
+                            <p class="text-down">-1.1% <i class="fa-solid fa-caret-down"></i></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trending coins section -->
+                <div style="display:flex;justify-content:space-between;align-items:center;margin:30px 0 15px;">
+                    <h3 class="section-title" style="margin:0;" data-i18n="live_prices">Canlı Kripto Qiymətləri</h3>
+                    <div style="display:flex;gap:8px;" id="coin-card-controls"></div>
+                </div>
+                <div class="ticker-header" style="margin-bottom:20px;"></div>
+                <div id="nav-wrapper" style="display:flex;align-items:center;justify-content:center;gap:16px;width:100%;">
+                    <button onclick="moveCards('prev')" class="arrow-btn"><i class="fa-solid fa-chevron-left"></i></button>
+                    <div id="card-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;flex:1;"></div>
+                    <button onclick="moveCards('next')" class="arrow-btn"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <!-- Alerts panel -->
+                <div class="alerts-panel card" style="margin-top:30px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+                        <h3><i class="fa-solid fa-bell" style="color:var(--accent);"></i> <span data-i18n="price_alerts">Qiymət Xəbərdarlıqları</span></h3>
+                        <button class="btn-primary" style="padding:8px 16px;font-size:12px;" onclick="openAlertModal()" data-i18n="new_alert_btn">+ Yeni Xəbərdarlıq</button>
+                    </div>
+                    <div id="alerts-list">
+                        <p style="color:var(--text-gray);font-size:13px;text-align:center;padding:20px;">Hələ heç bir xəbərdarlıq yaradılmayıb.</p>
+                    </div>
+                </div>
+                <br>
+            </section>
+
+            <!-- ======================== MARKET ======================== -->
+            <section id="market" class="tab-content">
+                <div class="market-header">
+                    <h1 style="color:white;font-weight:800;font-size:28px;margin-bottom:5px;letter-spacing:-0.5px;" data-i18n="market">Bazar Analizi</h1>
+                    <p style="color:var(--text-gray);font-size:15px;margin-bottom:30px;" data-i18n="market_subtitle">Canlı kriptovalyuta qiymətləri və bazar məlumatları</p>
+                </div>
+                <div id="market-global-stats" class="market-stats-grid">
+                    <div class="stat-glass-card"><small data-i18n="total_market_cap">Ümumi Bazar Kapitalı</small><h3 id="global-cap">--</h3><span id="global-cap-change">--</span></div>
+                    <div class="stat-glass-card"><small data-i18n="vol_24h_market">24 saatlıq həcm</small><h3 id="global-volume">--</h3><span style="color:var(--success);" data-i18n="live_label">Canlı</span></div>
+                    <div class="stat-glass-card"><small data-i18n="btc_dominance">BTC Dominantlığı</small><h3 id="btc-dom">--</h3><span id="btc-dom-chg" style="color:var(--danger);">--</span></div>
+                    <div class="stat-glass-card"><small data-i18n="active_cryptos">Aktiv Kriptovalyutalar</small><h3 id="active-coins">--</h3><span style="color:var(--accent);">CoinGecko</span></div>
+                </div>
+                <div class="market-controls">
+                    <div class="search-container">
+                        <i class="fa-solid fa-magnifying-glass search-inner-icon"></i>
+                        <input type="text" id="market-search" data-i18n-placeholder="market_search_placeholder" placeholder="Kripto axtarın..." onkeyup="filterMarket()">
+                    </div>
+                    <div class="filter-tabs">
+                        <button class="filter-btn active" onclick="filterByTag('all',event)" data-i18n="filter_all">Hamısı</button>
+                        <button class="filter-btn" onclick="filterByTag('defi',event)">DeFi</button>
+                        <button class="filter-btn" onclick="filterByTag('nft',event)">NFT</button>
+                        <button class="filter-btn" onclick="filterByTag('layer1',event)">Layer 1</button>
+                        <button class="filter-btn" onclick="filterByTag('stablecoin',event)">Stablecoin</button>
+                    </div>
+                </div>
+                <div class="market-table-container">
+                    <div class="market-table-header">
+                        <div class="col-rank">#</div>
+                        <div class="col-name" data-i18n="col_asset">AKTİV</div>
+                        <div class="col-price" data-i18n="col_price">QİYMƏT</div>
+                        <div class="col-change" data-i18n="col_change">24S DEYİŞİM</div>
+                        <div class="col-marketcap" data-i18n="col_mcap">BAZAR DƏYƏRİ</div>
+                        <div class="col-action" style="text-align:right;" data-i18n="col_action">HƏRƏKƏT</div>
+                    </div>
+                    <div id="market-analysis-list" class="market-list-scroll"></div>
+                </div>
+                <br>
+            </section>
+
+            <!-- ======================== WALLET ======================== -->
+            <section id="wallet" class="tab-content">
+                <h2 data-i18n="your_wallet">Sizin Pulqabınız</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div>
+                            <p data-i18n="total_assets">Ümumi Aktivlər (Koinlər)</p>
+                            <div class="balance-row">
+                                <h2 id="wallet-total-wealth">$0.00</h2>
+                                <button class="eye-toggle-btn" onclick="toggleBalance('wallet-total-wealth', this)" title="Gizlə/Göstər">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="trend up"><i class="fa-solid fa-chart-pie"></i> <span data-i18n="only_investments">Sadəcə İnvestisiyalar</span></div>
+                    </div>
+                    <div class="stat-card">
+                        <div>
+                            <p data-i18n="cash_balance">Mövcud Nağd Balans</p>
+                            <div class="balance-row">
+                                <h2 id="wallet-cash-balance">$0.00</h2>
+                                <button class="eye-toggle-btn" onclick="toggleBalance('wallet-cash-balance', this)" title="Gizlə/Göstər">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:10px;margin-top:10px;">
+                            <button onclick="addCash()" style="background:var(--accent)!important;color:white!important;border:none!important;"><i class="fa-solid fa-plus"></i> <span data-i18n="add_balance">Balansı Artır</span></button>
+                            <button onclick="resetWallet()" style="background:rgba(255,71,87,0.1);color:#ff4757;border:1px solid rgba(255,71,87,0.2);"><i class="fa-solid fa-rotate-right"></i> <span data-i18n="reset">Sıfırla</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- P&L Summary -->
+                <div class="pnl-row">
+                    <div class="pnl-card card">
+                        <small data-i18n="pnl_total">Ümumi Gəlir / Zərər</small>
+                        <h2 id="pnl-total" style="color:var(--success);">$0.00</h2>
+                        <span id="pnl-pct" style="color:var(--success);font-size:13px;">0.00%</span>
+                    </div>
+                    <div class="pnl-card card">
+                        <small data-i18n="best_trade">Ən Yaxşı Alış</small>
+                        <h3 id="best-trade">--</h3>
+                    </div>
+                    <div class="pnl-card card">
+                        <small data-i18n="operations">Əməliyyatlar</small>
+                        <h3 id="trade-count">0</h3>
+                    </div>
+                    <div class="pnl-card card">
+                        <small data-i18n="portfolio_value">Portfolio Dəyəri</small>
+                        <h3 id="portfolio-pct-bar" style="color:var(--accent);">--</h3>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top:25px;">
+                    <h3 data-i18n="current_assets">Mövcud Aktivləriniz</h3>
+                    <div id="wallet-assets-list"></div>
+                </div>
+
+                <!-- Transaction History -->
+                <div class="card" style="margin-top:25px;">
+                    <h3><i class="fa-solid fa-clock-rotate-left" style="color:var(--accent);"></i> <span data-i18n="recent_tx">Son Əməliyyatlar</span></h3>
+                    <div id="tx-history" style="margin-top:15px;"></div>
+                </div>
+            </section>
+
+            <!-- ======================== WATCHLIST ======================== -->
+            <section id="watchlist" class="tab-content">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;">
+                    <div>
+                        <h2 style="font-size:26px;font-weight:800;margin:0;" data-i18n="watchlist">İzləmə Siyahısı</h2>
+                        <p style="color:var(--text-gray);font-size:14px;margin-top:5px;" data-i18n="watchlist_subtitle">Sevdiyiniz koinləri izləyin</p>
+                    </div>
+                    <div class="watchlist-search-wrap">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="watchlist-search" data-i18n-placeholder="add_coin_placeholder" placeholder="Koin əlavə et..." oninput="watchlistSearchCoin()">
+                        <div id="watchlist-dropdown" class="watchlist-dropdown"></div>
+                    </div>
+                </div>
+                <div id="watchlist-grid" class="watchlist-grid"></div>
+            </section>
+
+            <!-- ======================== NEWS ======================== -->
+            <section id="news" class="tab-content">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;">
+                    <div>
+                        <h2 style="font-size:26px;font-weight:800;margin:0;" data-i18n="news">Krypto Xəbərləri</h2>
+                        <p style="color:var(--text-gray);font-size:14px;margin-top:5px;" data-i18n="news_subtitle">Ən son bazar hadisələri</p>
+                    </div>
+                    <div class="news-filter-tabs">
+                        <button class="filter-btn active" onclick="filterNews('all',event)">Hamısı</button>
+                        <button class="filter-btn" onclick="filterNews('bitcoin',event)">Bitcoin</button>
+                        <button class="filter-btn" onclick="filterNews('ethereum',event)">Ethereum</button>
+                        <button class="filter-btn" onclick="filterNews('defi',event)">DeFi</button>
+                    </div>
+                </div>
+                <div id="news-grid" class="news-grid"></div>
+                <br>
+            </section>
+
+            <!-- ======================== CONVERTER ======================== -->
+            <section id="converter" class="tab-content">
+                <div style="max-width:700px;margin:0 auto;">
+                    <h2 style="font-size:26px;font-weight:800;margin-bottom:8px;" data-i18n="converter">Kripto Konverter</h2>
+                    <p style="color:var(--text-gray);margin-bottom:35px;" data-i18n="converter_subtitle">Real vaxtda qiymət çevirmə</p>
+
+                    <div class="converter-card card">
+                        <div class="converter-body">
+                            <div class="converter-row">
+                                <div class="converter-input-wrap">
+                                    <label data-i18n="amount_label">Məbləğ</label>
+                                    <input type="number" id="conv-amount" value="1" oninput="doConvert()" class="conv-input">
+                                </div>
+                                <div class="converter-coin-select">
+                                    <label data-i18n="source_label">Mənbə</label>
+                                    <select id="conv-from" onchange="doConvert()" class="conv-select">
+                                        <option value="usd">USD 🇺🇸</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="converter-swap-wrap">
+                                <div class="converter-swap" onclick="swapConverter()">
+                                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                                </div>
+                            </div>
+                            <div class="converter-row">
+                                <div class="converter-input-wrap">
+                                    <label data-i18n="result_label">Nəticə</label>
+                                    <input type="text" id="conv-result" readonly class="conv-input conv-result-input">
+                                </div>
+                                <div class="converter-coin-select">
+                                    <label data-i18n="target_label">Hədəf</label>
+                                    <select id="conv-to" onchange="doConvert()" class="conv-select">
+                                        <option value="bitcoin">Bitcoin (BTC)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="conv-rate-display" id="conv-rate">--</div>
+                    </div>
+
+                    <!-- Popular pairs -->
+                    <h3 style="margin-top:35px;margin-bottom:15px;color:var(--text-gray);font-size:14px;text-transform:uppercase;letter-spacing:1px;" data-i18n="popular_pairs">Populyar Cütlər</h3>
+                    <div class="pairs-grid" id="pairs-grid"></div>
+                </div>
+                <br>
+            </section>
+
+            <!-- ======================== TRADING ======================== -->
+            <section id="trading" class="tab-content">
+
+                <!-- ── Trading Header Bar ── -->
+                <div class="trading-header-bar">
+                    <div class="trading-logo">
+                        <div class="trading-logo-icon">
+                            <i class="fa-solid fa-bolt-lightning"></i>
+                        </div>
+                        <div class="trading-logo-text">
+                            <span class="t-logo-name">NEXUS <strong>TRADING</strong></span>
+                            <span class="t-logo-sub">Professional Terminal</span>
+                        </div>
+                    </div>
+                    <div class="trading-mkt-stats">
+                        <div class="trading-live-badge"><span class="tl-dot"></span>Canlı</div>
+                        <div class="tms-pill">
+                            <span class="tms-label">BTC</span>
+                            <span class="tms-val" id="tstat-btc-val">--</span>
+                            <span class="tms-chg" id="tstat-btc-chg">--</span>
+                        </div>
+                        <div class="tms-pill">
+                            <span class="tms-label">ETH</span>
+                            <span class="tms-val" id="tstat-eth-val">--</span>
+                            <span class="tms-chg" id="tstat-eth-chg">--</span>
+                        </div>
+                        <div class="tms-pill tms-balance">
+                            <i class="fa-solid fa-wallet" style="color:var(--accent);font-size:11px;"></i>
+                            <span class="tms-val" id="tstat-balance-val">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trading-terminal">
+                    <!-- Left: Coin List -->
+                    <div class="trading-coin-list">
+                        <div class="trading-coin-search">
+                            <div style="position:relative;">
+                                <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-gray);font-size:11px;pointer-events:none;"></i>
+                                <input type="text" id="trading-search" placeholder="Koin axtar..." oninput="filterTradingCoins()" style="padding-left:28px;">
+                            </div>
+                        </div>
+                        <div class="trading-list-tabs">
+                            <button class="tl-tab active" onclick="setTradingListTab('all',this)">Hamısı</button>
+                            <button class="tl-tab" onclick="setTradingListTab('watchlist',this)">İzlənənlər</button>
+                            <button class="tl-tab" onclick="setTradingListTab('gainers',this)">Qazanan</button>
+                        </div>
+                        <div class="trading-list-header">
+                            <span>Koin</span>
+                            <span>Qiymət / Dəyişim</span>
+                        </div>
+                        <div class="trading-coin-scroll" id="trading-coin-scroll">
+                            <p style="color:var(--text-gray);font-size:12px;text-align:center;padding:20px;">Məlumatlar yüklənir...</p>
+                        </div>
+                    </div>
+
+                    <!-- Center: Chart -->
+                    <div class="trading-chart-wrapper">
+                        <div class="trading-chart-header">
+                            <div class="trading-chart-coin-info">
+                                <img id="trading-chart-img" src="" alt="" style="width:36px;height:36px;border-radius:50%;flex-shrink:0;">
+                                <div>
+                                    <div style="color:white;font-weight:800;font-size:16px;line-height:1.2;" id="trading-chart-name">Bitcoin</div>
+                                    <div style="color:var(--text-gray);font-size:11px;" id="trading-chart-sym">BTC / USDT</div>
+                                </div>
+                                <div class="chart-price-block">
+                                    <div style="color:white;font-weight:900;font-size:20px;" id="trading-chart-price">--</div>
+                                    <div style="font-size:12px;font-weight:700;" id="trading-chart-chg">--</div>
+                                </div>
+                                <div class="chart-ohlc-stats">
+                                    <div class="ohlc-item"><span>24s Yüksək</span><span id="ohlc-high" style="color:#0ecb81;">--</span></div>
+                                    <div class="ohlc-item"><span>24s Aşağı</span><span id="ohlc-low" style="color:#f6465d;">--</span></div>
+                                    <div class="ohlc-item"><span>Həcm (24s)</span><span id="ohlc-vol">--</span></div>
+                                    <div class="ohlc-item"><span>Bazar Dəyəri</span><span id="ohlc-mcap">--</span></div>
+                                </div>
+                            </div>
+                            <div class="trading-tf-tabs">
+                                <button class="tf-btn active" onclick="setTradingTF('D',this)">1D</button>
+                                <button class="tf-btn" onclick="setTradingTF('60',this)">1H</button>
+                                <button class="tf-btn" onclick="setTradingTF('240',this)">4H</button>
+                                <button class="tf-btn" onclick="setTradingTF('W',this)">1W</button>
+                                <button class="tf-btn" onclick="setTradingTF('M',this)">1M</button>
+                            </div>
+                        </div>
+                        <div id="trading-tv-container"></div>
+                    </div>
+
+                    <!-- Right: Order Panel -->
+                    <div class="trading-order-panel">
+                        <div class="order-type-bar">
+                            <div class="order-type-badge"><i class="fa-solid fa-bolt"></i> Spot</div>
+                            <div class="order-mode-tabs">
+                                <button class="order-mode-btn active">Bazar</button>
+                                <button class="order-mode-btn disabled" title="Tezliklə">Limit</button>
+                            </div>
+                        </div>
+
+                        <!-- Position card (hidden until coin is owned) -->
+                        <div id="order-position-card" style="display:none;"></div>
+
+                        <div class="order-balance-card">
+                            <div class="obc-row">
+                                <div>
+                                    <small>Nağd Balans</small>
+                                    <strong id="order-available-cash">$0.00</strong>
+                                </div>
+                                <div style="text-align:right;">
+                                    <small>Koin Miqdarı</small>
+                                    <strong id="order-coin-holdings">0</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-tabs">
+                            <button class="order-tab buy active" id="order-tab-buy" onclick="setOrderType('buy')">
+                                <i class="fa-solid fa-arrow-trend-up"></i> Al
+                            </button>
+                            <button class="order-tab sell" id="order-tab-sell" onclick="setOrderType('sell')">
+                                <i class="fa-solid fa-arrow-trend-down"></i> Sat
+                            </button>
+                            <button class="order-tab swap-tab" id="order-tab-swap" onclick="setOrderType('swap')">
+                                <i class="fa-solid fa-arrows-rotate"></i> Swap
+                            </button>
+                        </div>
+
+                        <!-- Normal buy/sell panel -->
+                        <div id="normal-order-panel">
+                            <div class="order-input-label">Məbləğ (USD)</div>
+                            <div class="order-input-wrap">
+                                <input type="number" id="order-usd-amount" min="0" step="any" placeholder="0.00" oninput="updateOrderTotal()">
+                                <span class="order-sym-badge">USD</span>
+                            </div>
+                            <div class="order-pct-row">
+                                <button class="order-pct-btn" onclick="setOrderPct(25)">25%</button>
+                                <button class="order-pct-btn" onclick="setOrderPct(50)">50%</button>
+                                <button class="order-pct-btn" onclick="setOrderPct(75)">75%</button>
+                                <button class="order-pct-btn" onclick="setOrderPct(100)">100%</button>
+                            </div>
+                            <div class="order-price-info">
+                                <div class="order-price-row"><span>Bazar Qiyməti</span><span id="order-market-price">--</span></div>
+                                <div class="order-price-row"><span>Alacaqsınız</span><span id="order-you-receive">0 --</span></div>
+                                <div class="order-price-row"><span>Komissiya (0.1%)</span><span id="order-fee" style="color:var(--text-gray);">$0.00</span></div>
+                                <div class="order-price-row order-total-row"><span>Ümumi</span><span id="order-total-cost">$0.00</span></div>
+                            </div>
+                            <button class="order-submit-btn buy" id="order-submit-btn" onclick="submitTradingOrder()">
+                                <i class="fa-solid fa-arrow-trend-up"></i> Al
+                            </button>
+                        </div>
+
+                        <!-- Swap panel -->
+                        <div id="swap-panel" style="display:none;">
+                            <div class="swap-box">
+                                <div class="swap-input-label">Satırsınız</div>
+                                <div class="swap-input-row">
+                                    <select id="swap-from-coin" class="swap-coin-select" onchange="updateSwapPreview()"></select>
+                                    <input type="number" id="swap-from-amount" class="swap-amount-input" placeholder="0.00" oninput="updateSwapPreview()">
+                                </div>
+                                <div class="swap-avail" id="swap-from-balance">Mövcud: --</div>
+                            </div>
+                            <div class="swap-flip-btn" onclick="flipSwapCoins()">
+                                <i class="fa-solid fa-arrows-up-down"></i>
+                            </div>
+                            <div class="swap-box swap-box-to">
+                                <div class="swap-input-label">Alırsınız</div>
+                                <div class="swap-input-row">
+                                    <select id="swap-to-coin" class="swap-coin-select" onchange="updateSwapPreview()"></select>
+                                    <input type="number" id="swap-to-amount" class="swap-amount-input" placeholder="0.00" readonly style="opacity:0.7;">
+                                </div>
+                            </div>
+                            <div class="order-price-info" style="margin-top:10px;">
+                                <div class="order-price-row"><span>Kurs</span><span id="swap-rate">--</span></div>
+                                <div class="order-price-row"><span>Komissiya (0.1%)</span><span id="swap-fee" style="color:var(--text-gray);">--</span></div>
+                                <div class="order-price-row order-total-row"><span>Alacaqsınız</span><span id="swap-receive-net">--</span></div>
+                            </div>
+                            <button class="order-submit-btn swap-submit" onclick="submitSwap()">
+                                <i class="fa-solid fa-arrows-rotate"></i> Swap Et
+                            </button>
+                        </div>
+
+                        <div class="order-recent-trades">
+                            <div class="order-recent-title">
+                                <i class="fa-solid fa-clock-rotate-left"></i> Son Əməliyyatlar
+                            </div>
+                            <div id="order-recent-list">
+                                <p style="color:var(--text-gray);font-size:12px;text-align:center;padding:10px 0;">Əməliyyat yoxdur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /content-body -->
+    </main>
+</div>
+
+<!-- ADD BALANCE MODAL -->
+<div id="add-cash-modal" class="add-cash-modal-overlay">
+    <div class="add-cash-modal-box">
+        <button id="add-cash-close" style="position:absolute;top:16px;right:16px;background:rgba(255,255,255,0.06);border:none;width:34px;height:34px;border-radius:50%;color:#808a9d;cursor:pointer;font-size:14px;transition:0.2s;">✕</button>
+
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;">
+            <div style="width:44px;height:44px;background:rgba(61,110,255,0.12);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-wallet" style="color:var(--accent);font-size:18px;"></i>
+            </div>
+            <div>
+                <h3 style="margin:0;color:white;font-size:18px;font-weight:800;" data-i18n="add_balance">Balans Artır</h3>
+                <p style="margin:2px 0 0;color:#808a9d;font-size:13px;" id="add-cash-current"></p>
+            </div>
+        </div>
+
+        <div style="height:1px;background:var(--border);margin:18px 0;"></div>
+
+        <p style="color:#808a9d;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">Sürətli Seçim</p>
+        <div class="preset-amounts">
+            <button class="preset-btn" onclick="setAddAmount(100,this)">$100</button>
+            <button class="preset-btn" onclick="setAddAmount(500,this)">$500</button>
+            <button class="preset-btn" onclick="setAddAmount(1000,this)">$1K</button>
+            <button class="preset-btn" onclick="setAddAmount(5000,this)">$5K</button>
+            <button class="preset-btn" onclick="setAddAmount(10000,this)">$10K</button>
+            <button class="preset-btn" onclick="setAddAmount(25000,this)">$25K</button>
+            <button class="preset-btn" onclick="setAddAmount(50000,this)">$50K</button>
+            <button class="preset-btn" onclick="setAddAmount(100000,this)">$100K</button>
+        </div>
+
+        <p style="color:#808a9d;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;margin:16px 0 8px;">Xüsusi Məbləğ</p>
+        <div style="position:relative;">
+            <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);color:#808a9d;font-size:20px;font-weight:700;pointer-events:none;">$</span>
+            <input id="add-cash-input" type="number" min="1" step="any" placeholder="0.00"
+                class="cash-input-field" style="padding-left:34px;">
+        </div>
+
+        <div class="add-cash-actions">
+            <button class="btn-cancel" id="add-cash-cancel">Ləğv Et</button>
+            <button class="btn-confirm-cash" onclick="confirmAddCash()">
+                <i class="fa-solid fa-plus"></i> Əlavə Et
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ALERT MODAL -->
+<div id="alert-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-box card">
+        <div style="display:flex;justify-content:space-between;margin-bottom:20px;">
+            <h3 data-i18n="create_alert_title">Qiymət Xəbərdarlığı Yarat</h3>
+            <i class="fa-solid fa-xmark" style="cursor:pointer;color:var(--text-gray);" onclick="closeAlertModal()"></i>
+        </div>
+        <div class="input-group-modal">
+            <label data-i18n="select_coin">Koin Seçin</label>
+            <select id="alert-coin" class="conv-select" style="width:100%;"></select>
+        </div>
+        <div class="input-group-modal">
+            <label data-i18n="condition_label">Şərt</label>
+            <select id="alert-condition" class="conv-select" style="width:100%;">
+                <option value="above" data-i18n="above_label">Yuxarı keçəndə (&gt;)</option>
+                <option value="below" data-i18n="below_label">Aşağı düşəndə (&lt;)</option>
+            </select>
+        </div>
+        <div class="input-group-modal">
+            <label data-i18n="price_usd_label">Qiymət ($)</label>
+            <input type="number" id="alert-price" class="conv-input" placeholder="0.00">
+        </div>
+        <button class="btn-primary" style="width:100%;margin-top:15px;" onclick="createAlert()" data-i18n="create_btn">Xəbərdarlıq Yarat</button>
+    </div>
+</div>
+
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-bottom-nav">
+    <button class="mob-nav-btn active" data-target="dash"><i class="fa-solid fa-gauge-high"></i><span data-i18n="home">Ana</span></button>
+    <button class="mob-nav-btn" data-target="market"><i class="fa-solid fa-chart-area"></i><span data-i18n="market">Bazar</span></button>
+    <button class="mob-nav-btn" data-target="wallet"><i class="fa-solid fa-wallet"></i><span data-i18n="wallet">Pulqabı</span></button>
+    <button class="mob-nav-btn" data-target="watchlist"><i class="fa-solid fa-star"></i><span data-i18n="watch">İzlə</span></button>
+    <button class="mob-nav-btn" data-target="trading"><i class="fa-solid fa-chart-candlestick"></i><span data-i18n="trading">Trading</span></button>
+    <button class="mob-nav-btn" onclick="location.href='settings.html'"><i class="fa-solid fa-gear"></i><span data-i18n="settings">Ayarlar</span></button>
+</nav>
+
+<script>
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+}
+function closeSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebar-overlay');
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
+// Mobile bottom nav
+document.querySelectorAll('.mob-nav-btn[data-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        const target = document.getElementById(btn.dataset.target);
+        if (target) target.classList.add('active');
+        const sideLink = document.querySelector('.nav-link[data-target="'+btn.dataset.target+'"]');
+        if (sideLink) sideLink.classList.add('active');
+        const mainContent = document.querySelector('.main-content');
+        if (btn.dataset.target === 'trading') {
+            mainContent.classList.add('trading-mode');
+            setTimeout(() => window.openTradingTerminal && window.openTradingTerminal(), 100);
+        } else {
+            mainContent.classList.remove('trading-mode');
+        }
+        closeSidebar();
+    });
+});
+// Sync sidebar nav with mobile bottom nav
+document.querySelectorAll('.nav-link[data-target]').forEach(link => {
+    link.addEventListener('click', () => {
+        document.querySelectorAll('.mob-nav-btn').forEach(b => b.classList.remove('active'));
+        const mobileBtn = document.querySelector('.mob-nav-btn[data-target="'+link.dataset.target+'"]');
+        if (mobileBtn) mobileBtn.classList.add('active');
+        closeSidebar();
+    });
+});
+</script>
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/script.js"></script>
+<script>
+// Wallet Balance Toggle (Eye Icon)
+const balanceValues = {};
+function toggleBalance(id, btn) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const icon = btn.querySelector('i');
+    if (!balanceValues[id]) balanceValues[id] = el.textContent;
+    if (icon.classList.contains('fa-eye')) {
+        el.setAttribute('data-real', el.textContent);
+        el.textContent = '••••••';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+        btn.classList.add('hidden');
+    } else {
+        el.textContent = el.getAttribute('data-real') || balanceValues[id];
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+        btn.classList.remove('hidden');
+    }
+}
+</script>
+</body>
+</html>

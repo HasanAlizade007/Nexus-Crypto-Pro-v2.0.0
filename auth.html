@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Pro | Giriş və Qeydiyyat</title>
+    <link rel="stylesheet" href="css/auth-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;800&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#050608">
+</head>
+
+<body class="auth-page">
+    <!-- Language Selector -->
+    <div class="auth-lang-selector" id="lang-selector">
+        <button class="lang-btn" id="lang-btn" onclick="toggleLangDropdown()">
+            <i class="fa-solid fa-globe"></i>
+            <span id="lang-current">AZ</span>
+            <i class="fa-solid fa-chevron-down lang-chevron" id="lang-chevron"></i>
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown">
+            <div class="lang-option active" onclick="setLanguage('az')" data-lang="az">
+                <span class="lang-flag">🇦🇿</span><span>Azərbaycan</span><span class="lang-code">AZ</span>
+            </div>
+            <div class="lang-option" onclick="setLanguage('en')" data-lang="en">
+                <span class="lang-flag">🇬🇧</span><span>English</span><span class="lang-code">EN</span>
+            </div>
+            <div class="lang-option" onclick="setLanguage('ru')" data-lang="ru">
+                <span class="lang-flag">🇷🇺</span><span>Русский</span><span class="lang-code">RU</span>
+            </div>
+        </div>
+    </div>
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <div id="login-section" class="auth-card">
+                <div class="auth-header">
+                    <div class="logo-box" style="margin: 0 auto 15px;"><i class="fa-solid fa-bolt-lightning"></i></div>
+                    <h2 data-i18n="auth_welcome">Xoş Gəldiniz</h2>
+                    <p data-i18n="auth_login_sub">Nexus hesabınıza giriş edin</p>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-envelope"></i> <span data-i18n="email">E-poçt</span></label>
+                    <input type="email" id="login-email" placeholder="nümunə@mail.com">
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-lock"></i> <span data-i18n="password">Şifrə</span></label>
+                    <div class="pass-box">
+                        <input type="password" id="login-pass" class="password-input" placeholder="••••••••">
+                        <i class="fa-solid fa-eye-slash toggle-pass"></i>
+                    </div>
+                </div>
+                <button id="btn-login" class="btn-primary" data-i18n="login_btn">Daxil Ol</button>
+                <p class="auth-switch"><span data-i18n="no_account">Hesabınız yoxdur?</span> <span id="go-to-reg" data-i18n="register_link">Qeydiyyatdan keçin</span></p>
+            </div>
+
+            <div id="register-section" class="auth-card" style="display: none;">
+                <div class="auth-header">
+                    <h2 data-i18n="new_account">Yeni Hesab</h2>
+                    <p data-i18n="reg_sub">Məlumatlarınızı daxil edərək qeydiyyatdan keçin</p>
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-user"></i> <span data-i18n="fullname">Tam Adınız</span></label>
+                    <input type="text" id="reg-name" placeholder="Ad Soyad">
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-envelope"></i> <span data-i18n="email">E-poçt</span></label>
+                    <input type="email" id="reg-email" placeholder="nümunə@mail.com">
+                </div>
+                <div class="input-group">
+                    <label><i class="fa-solid fa-lock"></i> <span data-i18n="password">Şifrə</span></label>
+                    <input type="password" id="reg-pass" placeholder="••••••••">
+                </div>
+                <button id="btn-register" class="btn-primary" data-i18n="register_btn">Qeydiyyatı Tamamla</button>
+                <p class="auth-switch"><span data-i18n="have_account">Artıq hesabınız var?</span> <span id="go-to-login" data-i18n="login_link">Daxil olun</span></p>
+            </div>
+        </div>
+    </div>
+    <script src="js/auth-script.js"></script>
+    <script>
+    const authI18n = {
+        az: { auth_welcome:'Xoş Gəldiniz', auth_login_sub:'Nexus hesabınıza giriş edin', email:'E-poçt', password:'Şifrə', login_btn:'Daxil Ol', no_account:'Hesabınız yoxdur?', register_link:'Qeydiyyatdan keçin', new_account:'Yeni Hesab', reg_sub:'Məlumatlarınızı daxil edərək qeydiyyatdan keçin', fullname:'Tam Adınız', register_btn:'Qeydiyyatı Tamamla', have_account:'Artıq hesabınız var?', login_link:'Daxil olun' },
+        en: { auth_welcome:'Welcome Back', auth_login_sub:'Sign in to your Nexus account', email:'Email', password:'Password', login_btn:'Sign In', no_account:"Don't have an account?", register_link:'Register', new_account:'New Account', reg_sub:'Enter your details to create an account', fullname:'Full Name', register_btn:'Complete Registration', have_account:'Already have an account?', login_link:'Sign In' },
+        ru: { auth_welcome:'Добро Пожаловать', auth_login_sub:'Войдите в свой аккаунт Nexus', email:'Эл. почта', password:'Пароль', login_btn:'Войти', no_account:'Нет аккаунта?', register_link:'Зарегистрироваться', new_account:'Новый Аккаунт', reg_sub:'Введите данные для регистрации', fullname:'Полное Имя', register_btn:'Завершить Регистрацию', have_account:'Уже есть аккаунт?', login_link:'Войти' }
+    };
+    let currentLang = localStorage.getItem('nexusLang') || 'az';
+    function applyAuthLang(lang) {
+        currentLang = lang;
+        localStorage.setItem('nexusLang', lang);
+        const t = authI18n[lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (t[key]) el.textContent = t[key];
+        });
+        document.getElementById('lang-current').textContent = lang.toUpperCase();
+        document.querySelectorAll('.lang-option').forEach(opt => {
+            opt.classList.toggle('active', opt.dataset.lang === lang);
+        });
+    }
+    function setLanguage(lang) { applyAuthLang(lang); closeLangDropdown(); }
+    function toggleLangDropdown() {
+        const dd = document.getElementById('lang-dropdown');
+        const ch = document.getElementById('lang-chevron');
+        const isOpen = dd.classList.contains('open');
+        dd.classList.toggle('open', !isOpen);
+        ch.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+    }
+    function closeLangDropdown() {
+        document.getElementById('lang-dropdown').classList.remove('open');
+        document.getElementById('lang-chevron').style.transform = 'rotate(0deg)';
+    }
+    document.addEventListener('click', (e) => {
+        if (!document.getElementById('lang-selector').contains(e.target)) closeLangDropdown();
+    });
+    applyAuthLang(currentLang);
+    </script>
+</body>
+
+</html>
